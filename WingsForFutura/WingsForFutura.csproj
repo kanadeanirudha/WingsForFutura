@@ -341,11 +341,13 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\Images\active.svg" />
+    <Content Include="Content\Images\ApplicationLogo.svg" />
     <Content Include="Content\Images\biorad-logo.svg" />
     <Content Include="Content\Images\BioradMedisysBackground.jpg" />
     <Content Include="Content\Images\inactive.png" />
     <Content Include="Content\Images\no-image.jpg" />
     <Content Include="Content\Images\qr-code-dummy.png" />
+    <Content Include="Content\Images\WingsForFuturaBackground.png" />
     <Content Include="Content\style.css" />
     <Content Include="fonts\poppins\poppins-v5-latin-regular.svg" />
     <Content Include="fonts\poppins\roboto-condensed-v16-latin-regular.svg" />
