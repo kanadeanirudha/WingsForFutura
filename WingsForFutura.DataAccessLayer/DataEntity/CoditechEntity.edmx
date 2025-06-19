@@ -22,31 +22,26 @@
             <PropertyRef Name="AdminRoleMasterId" />
           </Key>
           <Property Name="AdminRoleMasterId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RoleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="ProductMaster">
+        <EntityType Name="ClientFiles">
           <Key>
-            <PropertyRef Name="ProductMasterId" />
+            <PropertyRef Name="ClientFileId" />
           </Key>
-          <Property Name="ProductMasterId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductName" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="Version" Type="varchar" MaxLength="100" />
-          <Property Name="Date" Type="date" />
-          <Property Name="DownloadCount" Type="int" Nullable="false" />
-          <Property Name="ProductUniqueCode" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="FileName" Type="varchar" MaxLength="500" />
+          <Property Name="ClientFileId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserMasterId" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="CreatedBy" Type="int" />
+          <Property Name="FileStatus" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" />
           <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
-          <Property Name="DeletedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="UserMaster">
           <Key>
@@ -55,24 +50,43 @@
           <Property Name="UserMasterId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserType" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="EmailId" Type="nvarchar" MaxLength="100" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MobileNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmailId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="100" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DOB" Type="datetime" Nullable="false" />
+          <Property Name="Nationality" Type="varchar" MaxLength="50" />
+          <Property Name="UniqueNumber" Type="varchar" MaxLength="30" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="AdminRoleMasterId" Type="tinyint" />
-          <Property Name="IsDocumentApprovalAuthority" Type="bit" />
-          <Property Name="CreatedBy" Type="int" />
+          <Property Name="AdminRoleMasterId" Type="tinyint" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" />
           <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <Association Name="FKUserMasterUserMasterId">
+          <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="1" />
+          <End Role="ClientFiles" Type="Self.ClientFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserMasterId" />
+            </Principal>
+            <Dependent Role="ClientFiles">
+              <PropertyRef Name="UserMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CoditechEntityModelStoreContainer">
           <EntitySet Name="AdminAssociateFormsToRole" EntityType="Self.AdminAssociateFormsToRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminRoleMaster" EntityType="Self.AdminRoleMaster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductMaster" EntityType="Self.ProductMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientFiles" EntityType="Self.ClientFiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FKUserMasterUserMasterId" Association="Self.FKUserMasterUserMasterId">
+            <End Role="UserMaster" EntitySet="UserMaster" />
+            <End Role="ClientFiles" EntitySet="ClientFiles" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -81,8 +95,12 @@
         <EntityContainer Name="RARIndiaEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AdminAssociateFormsToRoles" EntityType="Coditech.EntityModel.AdminAssociateFormsToRole" />
           <EntitySet Name="AdminRoleMasters" EntityType="Coditech.EntityModel.AdminRoleMaster" />
-          <EntitySet Name="ProductMasters" EntityType="Coditech.EntityModel.ProductMaster" />
+          <EntitySet Name="ClientFiles" EntityType="Coditech.EntityModel.ClientFile" />
           <EntitySet Name="UserMasters" EntityType="Coditech.EntityModel.UserMaster" />
+          <AssociationSet Name="FKUserMasterUserMasterId" Association="Coditech.EntityModel.FKUserMasterUserMasterId">
+            <End Role="UserMaster" EntitySet="UserMasters" />
+            <End Role="ClientFile" EntitySet="ClientFiles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AdminAssociateFormsToRole">
           <Key>
@@ -101,31 +119,27 @@
             <PropertyRef Name="AdminRoleMasterId" />
           </Key>
           <Property Name="AdminRoleMasterId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="ProductMaster">
+        <EntityType Name="ClientFile">
           <Key>
-            <PropertyRef Name="ProductMasterId" />
+            <PropertyRef Name="ClientFileId" />
           </Key>
-          <Property Name="ProductMasterId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
-          <Property Name="DownloadCount" Type="Int32" Nullable="false" />
-          <Property Name="ProductUniqueCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ClientFileId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserMasterId" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="FileStatus" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserMaster" Relationship="Coditech.EntityModel.FKUserMasterUserMasterId" FromRole="ClientFile" ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="UserMaster">
           <Key>
@@ -134,19 +148,35 @@
           <Property Name="UserMasterId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EmailId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Nationality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UniqueNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="AdminRoleMasterId" Type="Byte" />
-          <Property Name="IsDocumentApprovalAuthority" Type="Boolean" />
-          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="AdminRoleMasterId" Type="Byte" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ClientFiles" Relationship="Coditech.EntityModel.FKUserMasterUserMasterId" FromRole="UserMaster" ToRole="ClientFile" />
         </EntityType>
+        <Association Name="FKUserMasterUserMasterId">
+          <End Type="Coditech.EntityModel.UserMaster" Role="UserMaster" Multiplicity="1" />
+          <End Type="Coditech.EntityModel.ClientFile" Role="ClientFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserMasterId" />
+            </Principal>
+            <Dependent Role="ClientFile">
+              <PropertyRef Name="UserMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -179,23 +209,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductMasters">
-            <EntityTypeMapping TypeName="Coditech.EntityModel.ProductMaster">
-              <MappingFragment StoreEntitySet="ProductMaster">
-                <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <EntitySetMapping Name="ClientFiles">
+            <EntityTypeMapping TypeName="Coditech.EntityModel.ClientFile">
+              <MappingFragment StoreEntitySet="ClientFiles">
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="FileStatus" ColumnName="FileStatus" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="ProductUniqueCode" ColumnName="ProductUniqueCode" />
-                <ScalarProperty Name="DownloadCount" ColumnName="DownloadCount" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Version" ColumnName="Version" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProductMasterId" ColumnName="ProductMasterId" />
+                <ScalarProperty Name="UserMasterId" ColumnName="UserMasterId" />
+                <ScalarProperty Name="ClientFileId" ColumnName="ClientFileId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -206,13 +231,16 @@
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDocumentApprovalAuthority" ColumnName="IsDocumentApprovalAuthority" />
                 <ScalarProperty Name="AdminRoleMasterId" ColumnName="AdminRoleMasterId" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="UniqueNumber" ColumnName="UniqueNumber" />
+                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserType" ColumnName="UserType" />

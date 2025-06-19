@@ -15,11 +15,6 @@ namespace Coditech
             Mapper.CreateMap<UserModel, UserLoginViewModel>().ReverseMap();
             Mapper.CreateMap<UserModel, UserMaster>().ReverseMap();
             Mapper.CreateMap<UserModel, UserMasterViewModel>().ReverseMap();
-
-
-            Mapper.CreateMap<ProductMasterModel, ProductMasterViewModel>().ReverseMap();
-            Mapper.CreateMap<ProductMasterModel, ProductMaster>().ReverseMap();
-
             Mapper.CreateMap<AdminRoleMasterModel, AdminRoleMasterViewModel>().ReverseMap();
             Mapper.CreateMap<AdminRoleMasterModel, AdminRoleMaster>().ReverseMap();
         }

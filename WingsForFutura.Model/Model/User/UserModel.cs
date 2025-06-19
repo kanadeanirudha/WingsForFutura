@@ -17,7 +17,7 @@ namespace Coditech.Model
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public bool IsActive { get; set; }
-        public byte? AdminRoleMasterId { get; set; }
+        public byte AdminRoleMasterId { get; set; }
         public bool IsDocumentApprovalAuthority { get; set; }
         public string RoleName { get; set; }
         public List<string> FormAccessList { get; set; }

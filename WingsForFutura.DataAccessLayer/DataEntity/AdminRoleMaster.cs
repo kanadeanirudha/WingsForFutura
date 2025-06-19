@@ -10,6 +10,7 @@
 namespace Coditech.DataAccessLayer.DataEntity
 {
     using System;
+    using System.Collections.Generic;
 
     public partial class AdminRoleMaster : CoditechEntityBaseModel
     {

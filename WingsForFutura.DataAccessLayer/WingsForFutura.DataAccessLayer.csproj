@@ -57,13 +57,15 @@
   <ItemGroup>
     <Compile Include="BaseDataAccessLogic.cs" />
     <Compile Include="DataAccessLayers\Implementation\AdminRoleMasterDAL.cs" />
-    <Compile Include="DataAccessLayers\Implementation\ProductMasterDAL.cs" />
     <Compile Include="Constants\StoredProcedureKeys.cs" />
     <Compile Include="DataAccessLayers\Implementation\UserMasterDAL.cs" />
     <Compile Include="DataEntity\AdminAssociateFormsToRole.cs">
       <DependentUpon>CoditechEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="DataEntity\AdminRoleMaster.cs">
+      <DependentUpon>CoditechEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataEntity\ClientFile.cs">
       <DependentUpon>CoditechEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="DataEntity\CoditechEntity.Context.cs">
@@ -83,9 +85,6 @@
       <DependentUpon>CoditechEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="DataEntity\CoditechEntities.cs" />
-    <Compile Include="DataEntity\ProductMaster.cs">
-      <DependentUpon>CoditechEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataEntity\UserMaster.cs">
       <DependentUpon>CoditechEntity.tt</DependentUpon>
     </Compile>

@@ -11,21 +11,18 @@ namespace Coditech.DataAccessLayer.DataEntity
 {
     using System;
 
-    public partial class ProductMaster : CoditechEntityBaseModel
+    public partial class ClientFile : CoditechEntityBaseModel
     {
-        public int ProductMasterId { get; set; }
-        public string ProductName { get; set; }
-        public string Version { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public int DownloadCount { get; set; }
-        public string ProductUniqueCode { get; set; }
+        public long ClientFileId { get; set; }
+        public int UserMasterId { get; set; }
         public string FileName { get; set; }
         public bool IsActive { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
+        public bool FileStatus { get; set; }
+        public Nullable<long> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public bool IsDeleted { get; set; }
-        public Nullable<System.DateTime> DeletedDate { get; set; }
+
+        public virtual UserMaster UserMaster { get; set; }
     }
 }

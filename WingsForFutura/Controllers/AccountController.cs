@@ -78,11 +78,12 @@ namespace Coditech.Controllers
                         List<string> list = CoditechSessionHelper.GetDataFromSession<UserModel>(CoditechConstant.UserDataSession)?.FormAccessList;
                         if (list?.Count > 0)
                         {
-                            if (list.Any(x => x == "ProductMaster"))
-                            {
-                                return RedirectToAction<ProductMasterController>(x => x.List("true"));
-                            }
-                            else if (list.Any(x => x == "User"))
+                            //if (list.Any(x => x == "ProductMaster"))
+                            //{
+                            //    return RedirectToAction<ProductMasterController>(x => x.List("true"));
+                            //}
+                            //else 
+                            if (list.Any(x => x == "User"))
                             {
                                 return RedirectToAction<UserController>(x => x.List());
                             }

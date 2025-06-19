@@ -10,23 +10,36 @@
 namespace Coditech.DataAccessLayer.DataEntity
 {
     using System;
+    using System.Collections.Generic;
 
     public partial class UserMaster : CoditechEntityBaseModel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserMaster()
+        {
+            this.ClientFiles = new HashSet<ClientFile>();
+        }
+
         public int UserMasterId { get; set; }
         public string UserType { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string MobileNumber { get; set; }
         public string EmailId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public System.DateTime DOB { get; set; }
+        public string Nationality { get; set; }
+        public string UniqueNumber { get; set; }
         public bool IsActive { get; set; }
-        public Nullable<byte> AdminRoleMasterId { get; set; }
-        public Nullable<bool> IsDocumentApprovalAuthority { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
+        public byte AdminRoleMasterId { get; set; }
+        public Nullable<long> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ClientFile> ClientFiles { get; set; }
     }
 }
