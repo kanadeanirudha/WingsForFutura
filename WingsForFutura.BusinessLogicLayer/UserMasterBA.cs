@@ -46,7 +46,29 @@ namespace Coditech.BusinessLogicLayer
                 return (UserLoginViewModel)GetViewModelWithErrorMessage(userLoginViewModel, GeneralResources.ErrorMessage_PleaseContactYourAdministrator);
             }
         }
-
+        public UserMasterViewModel CreateUser(UserMasterViewModel userMasterViewModel)
+        {
+            try
+            {
+                UserModel userMasterModel = _userMasterDAL.CreateUser(userMasterViewModel.ToModel<UserModel>());
+                return IsNotNull(userMasterModel) ? userMasterModel.ToViewModel<UserMasterViewModel>() : new UserMasterViewModel();
+            }
+            catch (CoditechException ex)
+            {
+                switch (ex.ErrorCode)
+                {
+                    case ErrorCodes.AlreadyExist:
+                        return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, ex.ErrorMessage);
+                    default:
+                        return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.ErrorFailedToCreate);
+                }
+            }
+            catch (Exception ex)
+            {
+                CoditechFileLogging.LogMessage(ex.Message, CoditechComponents.Components.User.ToString());
+                return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.ErrorFailedToCreate);
+            }
+        }
         public UserMasterListViewModel GetUserList()
         {
             UserMasterListModel userMasterList = _userMasterDAL.GetUserList();
@@ -69,7 +91,7 @@ namespace Coditech.BusinessLogicLayer
             }
             catch (Exception ex)
             {
-                CoditechFileLogging.LogMessage(ex.Message, CoditechComponents.Components.ProductMaster.ToString());
+                CoditechFileLogging.LogMessage(ex.Message, CoditechComponents.Components.ClientMaster.ToString());
                 return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
             }
         }

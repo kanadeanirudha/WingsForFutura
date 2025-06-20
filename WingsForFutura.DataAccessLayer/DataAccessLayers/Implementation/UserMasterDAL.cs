@@ -4,9 +4,10 @@ using Coditech.ExceptionManager;
 using Coditech.Model;
 using Coditech.Resources;
 using Coditech.Utilities.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Web.Configuration;
 using static Coditech.Utilities.Helper.CoditechHelperUtility;
 namespace Coditech.DataAccessLayer
 {
@@ -43,7 +44,8 @@ namespace Coditech.DataAccessLayer
                 {
                     userModel.FormAccessList.Add("User");
                     userModel.FormAccessList.Add("AdminRoleMaster");
-                    userModel.FormAccessList.Add("ProductMaster");
+                    userModel.FormAccessList.Add("ClientMaster");
+                    userModel.FormAccessList.Add("UserModel");
                 }
                 else
                 {
@@ -57,6 +59,29 @@ namespace Coditech.DataAccessLayer
             return userModel;
         }
 
+        public UserModel CreateUser(UserModel userMasterModel)
+        {
+            if (IsNull(userMasterModel))
+                throw new CoditechException(ErrorCodes.NullModel, GeneralResources.ModelNotNull);
+            string rawPassword = GenerateRandomPassword();
+            userMasterModel.Password = MD5Hash(rawPassword);
+            UserMaster userModel = userMasterModel.FromModelToEntity<UserMaster>();
+
+            //Create new Country and return it.
+            UserMaster userData = _userMasterRepository.Insert(userModel);
+            if (userData?.UserMasterId > 0)
+            {
+                userMasterModel.UserMasterId = userData.UserMasterId;
+            }
+            else
+            {
+                userMasterModel.HasError = true;
+                userMasterModel.ErrorMessage = GeneralResources.ErrorFailedToCreate;
+            }
+            return userMasterModel;
+        }
+
+       
         public UserMasterListModel GetUserList()
         {
             UserMasterListModel listModel = new UserMasterListModel();

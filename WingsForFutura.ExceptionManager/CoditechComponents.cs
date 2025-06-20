@@ -5,8 +5,9 @@
         public enum Components
         {
             User = 1,
-            ProductMaster = 2,
+            ClientMaster = 2,
             AdminRoleMaster = 3,
+            UserRegistration = 4,
         }
     }
 }

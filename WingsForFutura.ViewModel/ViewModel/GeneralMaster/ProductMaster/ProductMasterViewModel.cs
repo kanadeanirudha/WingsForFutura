@@ -8,8 +8,8 @@ namespace Coditech.ViewModel
     {
         public int ProductMasterId { get; set; }
         [Required]
-        [Display(Name = "Product Name")]
-        public string ProductName { get; set; }
+        [Display(Name = "Client Name")]
+        public string ClientName { get; set; }
         public string ProductUniqueCode { get; set; }
         public string FileName { get; set; }
         public bool IsActive { get; set; }

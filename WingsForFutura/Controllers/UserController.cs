@@ -11,6 +11,7 @@ namespace Coditech.Controllers
     [SessionTimeoutAttribute]
     public class UserController : BaseController
     {
+        private const string createEdit = "~/Views/UserMaster/Edit.cshtml";
         UserMasterBA _userMasterBA = null;
         AdminRoleMasterBA _adminRoleMasterBA = null;
         public UserController()
@@ -23,6 +24,27 @@ namespace Coditech.Controllers
         {
             UserMasterListViewModel list = _userMasterBA.GetUserList();
             return View($"~/Views/UserMaster/List.cshtml", list);
+        }
+        [HttpGet]
+        public virtual ActionResult Create()
+        {
+            return View(createEdit, new UserMasterViewModel());
+        }
+
+        [HttpPost]
+        public virtual ActionResult Create(UserMasterViewModel userMasterViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                userMasterViewModel = _userMasterBA.CreateUser(userMasterViewModel);
+                if (!userMasterViewModel.HasError)
+                {
+                    SetNotificationMessage(GetSuccessNotificationMessage(GeneralResources.RecordAddedSuccessMessage));
+                    return RedirectToAction("List", CreateActionDataTable());
+                }
+            }
+            SetNotificationMessage(GetErrorNotificationMessage(userMasterViewModel.ErrorMessage));
+            return View(createEdit, userMasterViewModel);
         }
 
         [HttpGet]

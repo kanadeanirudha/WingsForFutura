@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Coditech.ViewModel
@@ -14,10 +15,14 @@ namespace Coditech.ViewModel
         public string UserType { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string MobileNumber { get; set; }
         public string EmailId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public DateTime DOB { get; set; }
+        public string Nationality { get; set; }
+        public string UniqueNumber { get; set; }
         public bool IsActive { get; set; }
         public short AdminRoleMasterId { get; set; }
         public bool IsDocumentApprovalAuthority { get; set; }
