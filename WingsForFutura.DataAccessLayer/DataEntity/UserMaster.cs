@@ -34,9 +34,9 @@ namespace Coditech.DataAccessLayer.DataEntity
         public string UniqueNumber { get; set; }
         public bool IsActive { get; set; }
         public byte AdminRoleMasterId { get; set; }
-        public Nullable<long> CreatedBy { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<long> ModifiedBy { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

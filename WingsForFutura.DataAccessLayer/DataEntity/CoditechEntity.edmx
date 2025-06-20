@@ -61,9 +61,9 @@
           <Property Name="UniqueNumber" Type="varchar" MaxLength="30" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="AdminRoleMasterId" Type="tinyint" Nullable="false" />
-          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <Association Name="FKUserMasterUserMasterId">
@@ -159,9 +159,9 @@
           <Property Name="UniqueNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="AdminRoleMasterId" Type="Byte" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="CreatedBy" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ClientFiles" Relationship="Coditech.EntityModel.FKUserMasterUserMasterId" FromRole="UserMaster" ToRole="ClientFile" />
         </EntityType>
