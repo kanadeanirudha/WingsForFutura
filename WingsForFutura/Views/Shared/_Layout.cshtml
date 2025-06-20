@@ -33,6 +33,7 @@
             height: 70px;
             animation: spin 1s linear infinite;
         }
+
         .center {
             position: absolute;
             top: 0;
@@ -61,11 +62,19 @@
             <nav class="profile-navigation d-flex gap-10">
                 @if (userData?.FormAccessList?.Count > 0)
                 {
-                    if (userData.FormAccessList.Any(x => x == "ProductMaster"))
+                    if (userData.FormAccessList.Any(x => x == "UserModel"))
+                    {
+                        <div class="sign-in-log-off">
+                            <a href="../User/Create" class="base-font-size">
+                                <i class="fa fa-solid fa-user"></i> User Registration
+                            </a>
+                        </div>
+                    }
+                    if (userData.FormAccessList.Any(x => x == "ClientMaster"))
                     {
                         <div class="sign-in-log-off">
                             <a href="../ProductMaster/List?filterBy=true" class="base-font-size">
-                                <i class="fa fa-solid fa-user"></i> Product List
+                                <i class="fa fa-solid fa-user"></i> Client List
                             </a>
                         </div>
                     }
@@ -85,6 +94,7 @@
                             </a>
                         </div>
                     }
+
                 }
             </nav>
         </div>
@@ -98,6 +108,11 @@
                 <div class="sign-in-log-off">
                     <a href="../Account/LogOff" class="base-font-size">
                         <i class="fa fa-sign-out" aria-hidden="true"></i> Log Off
+                    </a>
+                </div>
+                <div class="sign-in-log-off">
+                    <a href="../Account/ChangePassword" class="base-font-size">
+                        <i class="fa fa-solid fa-user"></i> Change Password
                     </a>
                 </div>
             </nav>
