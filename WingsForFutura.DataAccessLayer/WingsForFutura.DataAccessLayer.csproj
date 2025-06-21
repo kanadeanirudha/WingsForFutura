@@ -58,6 +58,7 @@
     <Compile Include="BaseDataAccessLogic.cs" />
     <Compile Include="DataAccessLayers\Implementation\AdminRoleMasterDAL.cs" />
     <Compile Include="Constants\StoredProcedureKeys.cs" />
+    <Compile Include="DataAccessLayers\Implementation\UserClientDAL.cs" />
     <Compile Include="DataAccessLayers\Implementation\UserMasterDAL.cs" />
     <Compile Include="DataEntity\AdminAssociateFormsToRole.cs">
       <DependentUpon>CoditechEntity.tt</DependentUpon>

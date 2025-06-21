@@ -46,8 +46,8 @@ namespace Coditech.DataAccessLayer
             var mail = new MailMessage
             {
                 From = new MailAddress(smtpUser, "Coditech Support"),
-                Subject = "Your Coditech Password",
-                Body = $"Hello,\n\nYour password is: {password}\n\nPlease change it after logging in.\n\n– Coditech Team",
+                Subject = "Your Login Password",
+                Body = $"Hello,\n\nYour password is: {password}\n\n Your username:{toEmail}Please change it after logging in.\n\n– Coditech Team",
                 IsBodyHtml = false
             };
             mail.To.Add(toEmail);

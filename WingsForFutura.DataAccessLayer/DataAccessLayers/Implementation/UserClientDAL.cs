@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Coditech.DataAccessLayer.DataEntity;
 using Coditech.DataAccessLayer.Repository;
 using Coditech.ExceptionManager;
@@ -9,12 +8,12 @@ using Coditech.Utilities.Helper;
 using static Coditech.Utilities.Helper.CoditechHelperUtility;
 namespace Coditech.DataAccessLayer
 {
-    public class UserMasterDAL : BaseDataAccessLogic
+    public class UserClientDAL : BaseDataAccessLogic
     {
         private readonly ICoditechRepository<UserMaster> _userMasterRepository;
         private readonly ICoditechRepository<AdminRoleMaster> _roleMasterRepository;
         private readonly ICoditechRepository<AdminAssociateFormsToRole> _adminAssociateFormsToRoleRepository;
-        public UserMasterDAL()
+        public UserClientDAL()
         {
             _userMasterRepository = new CoditechRepository<UserMaster>();
             _roleMasterRepository = new CoditechRepository<AdminRoleMaster>();
@@ -22,46 +21,15 @@ namespace Coditech.DataAccessLayer
         }
 
         #region Public Method
-        public UserModel Login(UserModel userModel)
-        {
-            if (IsNull(userModel))
-                throw new CoditechException(ErrorCodes.NullModel, GeneralResources.ModelNotNull);
-
-            UserMaster userMasterData = _userMasterRepository.Table.FirstOrDefault(x => x.UserName == userModel.UserName && x.Password == userModel.Password);
-
-            if (IsNull(userMasterData))
-                throw new CoditechException(ErrorCodes.NotFound, null);
-            else if (!userMasterData.IsActive)
-                throw new CoditechException(ErrorCodes.ContactAdministrator, null);
-
-            userModel = userMasterData?.FromEntityToModel<UserModel>();
-            if (IsNotNull(userModel))
-            {
-                userModel.FormAccessList = new List<string>();
-                if (userModel.UserType == "SuperAdmin")
-                {
-                    userModel.FormAccessList.Add("User");
-                    userModel.FormAccessList.Add("AdminRoleMaster");
-                    userModel.FormAccessList.Add("Client");
-                    userModel.FormAccessList.Add("UserModel");
-
-                }
-                else
-                {
-                    List<AdminAssociateFormsToRole> list = _adminAssociateFormsToRoleRepository.Table.Where(x => x.AdminRoleMasterId == userModel.AdminRoleMasterId)?.ToList();
-                    foreach (AdminAssociateFormsToRole role in list)
-                    {
-                        userModel.FormAccessList.Add(role.AdminFormCode);
-                    }
-                }
-            }
-            return userModel;
-        }
-
-        public UserModel CreateUser(UserModel userMasterModel)
+        public UserModel CreateUserClient(UserModel userMasterModel)
         {
             if (IsNull(userMasterModel))
                 throw new CoditechException(ErrorCodes.NullModel, GeneralResources.ModelNotNull);
+            userMasterModel.UserName = userMasterModel.EmailId;
+            userMasterModel.UserType = userMasterModel.AdminRoleMasterId.ToString();
+            userMasterModel.MobileNumber = "9876543210";
+            string rawPassword = GenerateRandomPassword();
+            userMasterModel.Password = MD5Hash(rawPassword);
             UserMaster userModel = userMasterModel.FromModelToEntity<UserMaster>();
 
             UserMaster userData = _userMasterRepository.Insert(userModel);
@@ -78,7 +46,7 @@ namespace Coditech.DataAccessLayer
         }
 
 
-        public UserMasterListModel GetUserList()
+        public UserMasterListModel GetUserClientList()
         {
             UserMasterListModel listModel = new UserMasterListModel();
             listModel.UserMasterList = (from user in _userMasterRepository.Table
@@ -101,7 +69,7 @@ namespace Coditech.DataAccessLayer
 
 
         //Get UserMaster by UserMaster id.
-        public UserModel GetUserMaster(int userMasterId)
+        public UserModel GetUserClient(int userMasterId)
         {
             if (userMasterId <= 0)
                 throw new CoditechException(ErrorCodes.IdLessThanOne, string.Format(GeneralResources.ErrorIdLessThanOne, "userMasterId"));
@@ -113,7 +81,7 @@ namespace Coditech.DataAccessLayer
         }
 
         //Update UserMaster.
-        public UserModel UpdateUserMaster(UserModel userModel)
+        public UserModel UpdateUserClient(UserModel userModel)
         {
             if (IsNull(userModel))
                 throw new CoditechException(ErrorCodes.InvalidData, GeneralResources.ModelNotNull);
@@ -133,34 +101,6 @@ namespace Coditech.DataAccessLayer
                 userModel.ErrorMessage = GeneralResources.UpdateErrorMessage;
             }
             return userModel;
-        }
-        public UserModel UpdateUserPassword(UserModel userModel)
-        {
-            if (IsNull(userModel))
-                throw new CoditechException(ErrorCodes.InvalidData, GeneralResources.ModelNotNull);
-
-            if (userModel.UserMasterId < 1)
-                throw new CoditechException(ErrorCodes.IdLessThanOne, string.Format(GeneralResources.ErrorIdLessThanOne, "UserMasterId"));
-
-            UserMaster userMasterData = _userMasterRepository.Table.FirstOrDefault(x => x.UserMasterId == userModel.UserMasterId);
-
-            if (IsNull(userMasterData))
-                throw new CoditechException(ErrorCodes.NotFound, GeneralResources.ErrorFailedToCreate);
-
-            // Update the password and modified details
-            userMasterData.Password = userModel.Password;
-            userMasterData.ModifiedBy = userModel.ModifiedBy;
-            userMasterData.ModifiedDate = System.DateTime.Now;
-
-            bool isPasswordUpdated = _userMasterRepository.Update(userMasterData);
-
-            if (!isPasswordUpdated)
-            {
-                userModel.HasError = true;
-                userModel.ErrorMessage = GeneralResources.UpdateErrorMessage;
-            }
-            UserModel userMasterModel = userMasterData.FromEntityToModel<UserModel>();
-            return userMasterModel;
         }
 
         #endregion
