@@ -138,6 +138,34 @@ namespace Coditech.DataAccessLayer
             }
             return userModel;
         }
+        public UserModel UpdateUserPassword(UserModel userModel)
+        {
+            if (IsNull(userModel))
+                throw new CoditechException(ErrorCodes.InvalidData, GeneralResources.ModelNotNull);
+
+            if (userModel.UserMasterId < 1)
+                throw new CoditechException(ErrorCodes.IdLessThanOne, string.Format(GeneralResources.ErrorIdLessThanOne, "UserMasterId"));
+
+            UserMaster userMasterData = _userMasterRepository.Table.FirstOrDefault(x => x.UserMasterId == userModel.UserMasterId);
+
+            if (IsNull(userMasterData))
+                throw new CoditechException(ErrorCodes.NotFound, GeneralResources.ErrorFailedToCreate);
+
+            // Update the password and modified details
+            userMasterData.Password = userModel.Password;
+            userMasterData.ModifiedBy = userModel.ModifiedBy;
+            userMasterData.ModifiedDate = System.DateTime.Now;
+
+            bool isPasswordUpdated = _userMasterRepository.Update(userMasterData);
+
+            if (!isPasswordUpdated)
+            {
+                userModel.HasError = true;
+                userModel.ErrorMessage = GeneralResources.UpdateErrorMessage;
+            }
+            UserModel userMasterModel = userMasterData.FromEntityToModel<UserModel>();
+            return userMasterModel;
+        }
 
         #endregion
     }

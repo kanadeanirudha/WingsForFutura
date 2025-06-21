@@ -411,6 +411,7 @@
     <Content Include="Views\AdminRoleMaster\List.cshtml" />
     <Content Include="Views\AdminRoleMaster\CreateEdit.cshtml" />
     <Content Include="Views\UserMaster\UnauthorizedAccess.cshtml" />
+    <Content Include="Views\UserMaster\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WingsForFutura.Resources\WingsForFutura.Resources.csproj">

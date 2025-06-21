@@ -95,5 +95,42 @@ namespace Coditech.BusinessLogicLayer
                 return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
             }
         }
+        public UserMasterViewModel ChangePassword(UserMasterViewModel userMasterViewModel)
+        {
+            try
+            {
+                // Get the user data from session
+                UserModel currentUser = CoditechSessionHelper.GetDataFromSession<UserModel>(CoditechConstant.UserDataSession);
+                if (currentUser == null)
+                {
+                    return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, "Session expired. Please log in again.");
+                }
+
+                // Fetch current user from DB to verify current password
+                UserModel existingUser = _userMasterDAL.GetUserMaster(currentUser.UserMasterId);
+                if (existingUser == null || existingUser.Password != MD5Hash(userMasterViewModel.CurrentPassword))
+                {
+                    return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, "Current password is incorrect.");
+                }
+
+                // Hash and update new password
+                existingUser.Password = MD5Hash(userMasterViewModel.NewPassword);
+                userMasterViewModel.ModifiedBy = LoginUserId();
+                UserModel updatedUser = _userMasterDAL.UpdateUserPassword(existingUser);
+
+                if (IsNotNull(updatedUser))
+                {
+                    return updatedUser.ToViewModel<UserMasterViewModel>();
+                }
+
+                return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                CoditechFileLogging.LogMessage(ex.Message, CoditechComponents.Components.User.ToString());
+                return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
+            }
+        }
+
     }
 }

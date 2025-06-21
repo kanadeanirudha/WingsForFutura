@@ -1,5 +1,6 @@
 ﻿using Coditech.BusinessLogicLayer;
 using Coditech.Model;
+using Coditech.Resources;
 using Coditech.Utilities.Constant;
 using Coditech.Utilities.Helper;
 using Coditech.ViewModel;
@@ -121,5 +122,31 @@ namespace Coditech.Controllers
         {
             return ActionView($"~/Views/UserMaster/UnauthorizedAccess.cshtml");
         }
+
+        [HttpGet]
+        public virtual ActionResult ChangePassword()
+        {
+            return View("~/Views/UserMaster/ChangePassword.cshtml", new UserMasterViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult ChangePassword(UserMasterViewModel userMasterViewModel)
+        {
+            string errorMessage = string.Empty;
+            if (ModelState.IsValid)
+            {
+                userMasterViewModel = _userMasterBA.ChangePassword(userMasterViewModel);
+                if (!userMasterViewModel.HasError)
+                {
+                    SetNotificationMessage(GetSuccessNotificationMessage(GeneralResources.ChangePasswordSuccessMessage));
+                    return RedirectToAction<UserController>(x => x.List());
+                }
+                errorMessage = userMasterViewModel.ErrorMessage;
+            }
+            SetNotificationMessage(GetErrorNotificationMessage(errorMessage));
+            return View("~/Views/UserMaster/ChangePassword.cshtml", userMasterViewModel);
+        }
+
     }
 }
