@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\CODITECH\WingsForFutura\WingsForFutura.DataAccessLayer\DataEntity\CoditechEntity.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\New folder (2)\WingsForFutura\WingsForFutura.DataAccessLayer\DataEntity\CoditechEntity.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

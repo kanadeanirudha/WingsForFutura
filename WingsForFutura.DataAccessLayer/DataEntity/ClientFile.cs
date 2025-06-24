@@ -7,12 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CoditechBaseFramework.DataAccessLayer.DataEntity
+namespace Coditech.DataAccessLayer.DataEntity
 {
     using System;
-    using System.Collections.Generic;
-    
-    public partial class ClientFile
+
+    public partial class ClientFile : CoditechEntityBaseModel
     {
         public long ClientFileId { get; set; }
         public int UserMasterId { get; set; }
@@ -23,7 +22,7 @@ namespace CoditechBaseFramework.DataAccessLayer.DataEntity
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-    
+
         public virtual UserMaster UserMaster { get; set; }
     }
 }

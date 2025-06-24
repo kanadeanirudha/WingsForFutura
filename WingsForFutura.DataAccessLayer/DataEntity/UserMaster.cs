@@ -7,19 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CoditechBaseFramework.DataAccessLayer.DataEntity
+namespace Coditech.DataAccessLayer.DataEntity
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class UserMaster
+
+    public partial class UserMaster : CoditechEntityBaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserMaster()
         {
             this.ClientFiles = new HashSet<ClientFile>();
         }
-    
+
         public int UserMasterId { get; set; }
         public string UserType { get; set; }
         public string UserName { get; set; }
@@ -29,7 +29,7 @@ namespace CoditechBaseFramework.DataAccessLayer.DataEntity
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public Nullable<System.DateTime> DOB { get; set; }
+        public System.DateTime DOB { get; set; }
         public string Nationality { get; set; }
         public string UniqueNumber { get; set; }
         public bool IsActive { get; set; }
@@ -38,7 +38,7 @@ namespace CoditechBaseFramework.DataAccessLayer.DataEntity
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClientFile> ClientFiles { get; set; }
     }
