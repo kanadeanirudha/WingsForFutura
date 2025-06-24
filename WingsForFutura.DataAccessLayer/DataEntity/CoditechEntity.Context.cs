@@ -7,23 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Coditech.DataAccessLayer.DataEntity
+namespace CoditechBaseFramework.DataAccessLayer.DataEntity
 {
+    using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
-    public partial class CoditechEntities : DbContext
+    
+    public partial class RARIndiaEntities : DbContext
     {
-        public CoditechEntities()
-            : base("name=CoditechEntities")
+        public RARIndiaEntities()
+            : base("name=RARIndiaEntities")
         {
         }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<AdminAssociateFormsToRole> AdminAssociateFormsToRoles { get; set; }
         public virtual DbSet<AdminRoleMaster> AdminRoleMasters { get; set; }
         public virtual DbSet<ClientFile> ClientFiles { get; set; }

@@ -7,11 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Coditech.DataAccessLayer.DataEntity
+namespace CoditechBaseFramework.DataAccessLayer.DataEntity
 {
     using System;
-
-    public partial class AdminAssociateFormsToRole : CoditechEntityBaseModel
+    using System.Collections.Generic;
+    
+    public partial class AdminAssociateFormsToRole
     {
         public int AdminAssociateFormsToRoleId { get; set; }
         public string AdminFormCode { get; set; }
