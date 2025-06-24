@@ -126,26 +126,26 @@ namespace Coditech.Controllers
         [HttpGet]
         public virtual ActionResult ChangePassword()
         {
-            return View("~/Views/UserMaster/ChangePassword.cshtml", new UserMasterViewModel());
+            return View("~/Views/UserMaster/ChangePassword.cshtml", new ChangePasswordViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult ChangePassword(UserMasterViewModel userMasterViewModel)
+        public virtual ActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
         {
             string errorMessage = string.Empty;
             if (ModelState.IsValid)
             {
-                userMasterViewModel = _userMasterBA.ChangePassword(userMasterViewModel);
-                if (!userMasterViewModel.HasError)
+                changePasswordViewModel = _userMasterBA.ChangePassword(changePasswordViewModel);
+                if (!changePasswordViewModel.HasError)
                 {
                     SetNotificationMessage(GetSuccessNotificationMessage(GeneralResources.ChangePasswordSuccessMessage));
                     return RedirectToAction<UserController>(x => x.List());
                 }
-                errorMessage = userMasterViewModel.ErrorMessage;
+                errorMessage = changePasswordViewModel.ErrorMessage;
             }
             SetNotificationMessage(GetErrorNotificationMessage(errorMessage));
-            return View("~/Views/UserMaster/ChangePassword.cshtml", userMasterViewModel);
+            return View("~/Views/UserMaster/ChangePassword.cshtml", changePasswordViewModel);
         }
 
     }

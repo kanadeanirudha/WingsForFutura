@@ -21,28 +21,31 @@
                     @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", @placeholder = "User name" })
                     @Html.ValidationMessageFor(m => m.UserName, null, new { @class = "required" })
                 </div>
-                <div class="mb-4 position-relative">
-                    <i class="fa fa-lock position-absolute"></i>
-                    @Html.PasswordFor(x => x.Password, new { @class = "form-control", @placeholder = "Enter Password" })
-                    @Html.ValidationMessageFor(m => m.Password, null, new { @class = "required" })
+                <div class="form-group mb-2">
+                    <label for="Password" class="form-label">Password<span class="required">&nbsp;*</span> </label>
+                    <div class="input-group password-input-wraper">
+                        @Html.PasswordFor(x => x.Password, new { @class = "form-control password-input", type = "Password", placeholder = "Password here..." })
+                        <i class="fas fa-eye view-password"></i>
+                    </div>
+                    @Html.ValidationMessageFor(x => x.Password, null, new { @class = "red" })
                 </div>
                 @*<div class="align-items-center d-flex justify-content-between mb-4">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="rememberMe">
-                    <label class="form-check-label base-font-size" for="rememberMe">Remember me</label>
-                </div>
-                <a href="forget-3.html" class="text-decoration-none float-end base-font-size">Forget Password</a>
-            </div>*@
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label base-font-size" for="rememberMe">Remember me</label>
+                        </div>
+                        <a href="forget-3.html" class="text-decoration-none float-end base-font-size">Forget Password</a>
+                    </div>*@
                 <input type="hidden" name="ReturnUrl" value="@Request.QueryString["ReturnUrl"]" />
                 <button type="submit" class="btn login-btn w-100 mb-4 btn-set-default">Sign In</button>
                 @*<div class="social-login mb-3 type--A">
-                <h5 class="text-center mb-3 base-font-size">OR</h5>
-                <div class="align-items-center d-flex justify-content-around social-container">
-                    <a href="#" class="social fb"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="#" class="social gPlus"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                    <a href="#" class="social linkedIn"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                </div>
-            </div>*@
+                        <h5 class="text-center mb-3 base-font-size">OR</h5>
+                        <div class="align-items-center d-flex justify-content-around social-container">
+                            <a href="#" class="social fb"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
+                            <a href="#" class="social gPlus"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                            <a href="#" class="social linkedIn"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                        </div>
+                    </div>*@
             }
 
             <!-- Register Link -->
@@ -51,3 +54,23 @@
     </div>
     <div class="col-lg-3 col-xs-12 col-sm-12"></div>
 </div>
+<!-- Font Awesome for eye icon (if not already included) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<!-- jQuery (required for the script) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Script to toggle Confirm Password only -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".view-password").click(function () {
+            var $icon = $(this);
+            var $input = $icon.closest(".input-group").find(".password-input");
+
+            // Toggle input type
+            var type = $input.attr("type") === "password" ? "text" : "password";
+            $input.attr("type", type);
+
+            // Toggle icon
+            $icon.toggleClass("fa-eye fa-eye-slash");
+        });
+    });
+</script>

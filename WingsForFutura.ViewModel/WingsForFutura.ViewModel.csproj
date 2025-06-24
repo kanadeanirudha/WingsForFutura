@@ -56,6 +56,7 @@
     <Compile Include="ViewModel\GeneralMaster\ProductMaster\ProductMasterViewModel.cs" />
     <Compile Include="ViewModel\GeneralMaster\UserMaster\UserMasterListViewModel.cs" />
     <Compile Include="ViewModel\GeneralMaster\UserMaster\UserMasterViewModel.cs" />
+    <Compile Include="ViewModel\Login\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModel\PageListViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\Login\UserLoginViewModel.cs" />

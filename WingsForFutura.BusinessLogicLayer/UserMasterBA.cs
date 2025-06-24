@@ -97,7 +97,7 @@ namespace Coditech.BusinessLogicLayer
                 return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
             }
         }
-        public UserMasterViewModel ChangePassword(UserMasterViewModel userMasterViewModel)
+        public ChangePasswordViewModel ChangePassword(ChangePasswordViewModel changePasswordViewModel)
         {
             try
             {
@@ -105,34 +105,41 @@ namespace Coditech.BusinessLogicLayer
                 UserModel currentUser = CoditechSessionHelper.GetDataFromSession<UserModel>(CoditechConstant.UserDataSession);
                 if (currentUser == null)
                 {
-                    return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, "Session expired. Please log in again.");
+                    return (ChangePasswordViewModel)GetViewModelWithErrorMessage(changePasswordViewModel, "Session expired. Please log in again.");
                 }
 
                 // Fetch current user from DB to verify current password
                 UserModel existingUser = _userMasterDAL.GetUserMaster(currentUser.UserMasterId);
-                if (existingUser == null || existingUser.Password != MD5Hash(userMasterViewModel.CurrentPassword))
+                if (existingUser == null || existingUser.Password != MD5Hash(changePasswordViewModel.CurrentPassword))
                 {
-                    return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, "Current password is incorrect.");
+                    return (ChangePasswordViewModel)GetViewModelWithErrorMessage(changePasswordViewModel, "Current password is incorrect.");
                 }
 
                 // Hash and update new password
-                existingUser.Password = MD5Hash(userMasterViewModel.NewPassword);
-                userMasterViewModel.ModifiedBy = LoginUserId();
+                existingUser.Password = MD5Hash(changePasswordViewModel.NewPassword);
+                changePasswordViewModel.ModifiedBy = LoginUserId();
                 UserModel updatedUser = _userMasterDAL.UpdateUserPassword(existingUser);
 
                 if (IsNotNull(updatedUser))
                 {
-                    return updatedUser.ToViewModel<UserMasterViewModel>();
+                    // ✅ Manual mapping here
+                    return new ChangePasswordViewModel
+                    {
+                        UserMasterId = updatedUser.UserMasterId,
+                        UserType = updatedUser.UserType,
+                        ModifiedBy = changePasswordViewModel.ModifiedBy
+                    };
                 }
 
-                return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
+                return (ChangePasswordViewModel)GetViewModelWithErrorMessage(changePasswordViewModel, GeneralResources.UpdateErrorMessage);
             }
             catch (Exception ex)
             {
                 CoditechFileLogging.LogMessage(ex.Message, CoditechComponents.Components.User.ToString());
-                return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
+                return (ChangePasswordViewModel)GetViewModelWithErrorMessage(changePasswordViewModel, GeneralResources.UpdateErrorMessage);
             }
         }
+
         public List<UserMasterViewModel> GetAllRoles()
         {
             List<UserModel> roles = _userMasterDAL.GetAllRoles(); // fix: correct type
