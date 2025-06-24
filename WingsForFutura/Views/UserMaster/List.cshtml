@@ -25,7 +25,6 @@
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Role Name</th>
-                                <th>Is Document Approval Authority</th>
                                 <th>Is Active</th>
                                 <th>Action</th>
                             </tr>
@@ -39,18 +38,6 @@
                                         <td>@item.FirstName</td>
                                         <td>@item.LastName</td>
                                         <td style="text-align:center">@item.RoleName</td>
-                                        <td style="text-align:center">
-                                            @if (@item.IsDocumentApprovalAuthority)
-                                            {
-                                                <img src="~/Content/Images/active.svg" style="width:20px; height:20px;" />
-                                                <span style="display:none">1</span>
-                                            }
-                                            else
-                                            {
-                                                <img src="~/Content/Images/inactive.png" style="width:20px; height:20px;" />
-                                                <span style="display:none">0</span>
-                                            }
-                                        </td>
                                         <td style="text-align:center">
                                             @if (@item.IsActive)
                                             {

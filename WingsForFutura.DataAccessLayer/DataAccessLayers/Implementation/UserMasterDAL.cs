@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Coditech.DataAccessLayer.DataEntity;
+﻿using Coditech.DataAccessLayer.DataEntity;
 using Coditech.DataAccessLayer.Repository;
 using Coditech.ExceptionManager;
 using Coditech.Model;
 using Coditech.Resources;
 using Coditech.Utilities.Helper;
+using System.Collections.Generic;
+using System.Linq;
 using static Coditech.Utilities.Helper.CoditechHelperUtility;
 namespace Coditech.DataAccessLayer
 {
@@ -162,6 +162,17 @@ namespace Coditech.DataAccessLayer
             UserModel userMasterModel = userMasterData.FromEntityToModel<UserModel>();
             return userMasterModel;
         }
+        public List<UserModel> GetAllRoles()
+        {
+            return _roleMasterRepository.Table
+                    .GroupBy(u => new { u.AdminRoleMasterId, u.RoleName }) // To get distinct roles
+                    .Select(g => new UserModel
+                    {
+                        AdminRoleMasterId = g.Key.AdminRoleMasterId,
+                        RoleName = g.Key.RoleName
+                    }).ToList();
+        }
+
 
         #endregion
     }

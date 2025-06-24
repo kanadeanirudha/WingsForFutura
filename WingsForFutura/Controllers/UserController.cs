@@ -4,6 +4,7 @@ using Coditech.Resources;
 using Coditech.Utilities.Constant;
 using Coditech.Utilities.Helper;
 using Coditech.ViewModel;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 namespace Coditech.Controllers
@@ -28,7 +29,17 @@ namespace Coditech.Controllers
         [HttpGet]
         public virtual ActionResult Create()
         {
-            return View(createEdit, new UserMasterViewModel());
+            var viewModel = new UserMasterViewModel();
+
+            // Fill dropdown list from Role Master (using UserMasterBA)
+            viewModel.AdminRoleMasterList = _userMasterBA.GetAllRoles()
+                .Select(r => new SelectListItem
+                {
+                    Text = r.RoleName,
+                    Value = r.AdminRoleMasterId.ToString()
+                }).ToList();
+
+            return View(createEdit, viewModel);
         }
 
         [HttpPost]
@@ -44,7 +55,7 @@ namespace Coditech.Controllers
                 }
             }
             SetNotificationMessage(GetErrorNotificationMessage(userMasterViewModel.ErrorMessage));
-            return View(createEdit, userMasterViewModel);
+            return RedirectToAction("List", CreateActionDataTable());
         }
 
         [HttpGet]
