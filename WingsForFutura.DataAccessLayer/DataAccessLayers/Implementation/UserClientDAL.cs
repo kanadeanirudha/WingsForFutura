@@ -26,8 +26,10 @@ namespace Coditech.DataAccessLayer
             if (IsNull(userMasterModel))
                 throw new CoditechException(ErrorCodes.NullModel, GeneralResources.ModelNotNull);
             userMasterModel.UserName = userMasterModel.EmailId;
+            userMasterModel.EmailId = userMasterModel.EmailId;
             userMasterModel.UserType = userMasterModel.AdminRoleMasterId.ToString();
-            userMasterModel.MobileNumber = "9876543210";
+            userMasterModel.MobileNumber = userMasterModel.MobileNumber;
+            userMasterModel.UserType = "Client";
             string rawPassword = GenerateRandomPassword();
             userMasterModel.Password = MD5Hash(rawPassword);
             UserMaster userModel = userMasterModel.FromModelToEntity<UserMaster>();
@@ -44,31 +46,30 @@ namespace Coditech.DataAccessLayer
             }
             return userMasterModel;
         }
-
-
-        public UserMasterListModel GetUserClientList()
+        public ClientMasterListModel GetUserClientList()
         {
-            UserMasterListModel listModel = new UserMasterListModel();
-            listModel.UserMasterList = (from user in _userMasterRepository.Table
-                                        join role in _roleMasterRepository.Table
-                                        on user.AdminRoleMasterId equals role.AdminRoleMasterId
-                                        into UserRoleGroup //Performing LINQ Group Join
-                                        from userrole in UserRoleGroup.DefaultIfEmpty()
-                                        where user.UserType != "SuperAdmin"
-                                        select new UserModel
-                                        {
-                                            FirstName = user.FirstName,
-                                            LastName = user.LastName,
-                                            IsActive = user.IsActive,
-                                            AdminRoleMasterId = user.AdminRoleMasterId,
-                                            RoleName = userrole.RoleName,
-                                            UserMasterId = user.UserMasterId,
-                                        }).ToList();
+            ClientMasterListModel listModel = new ClientMasterListModel();
+
+            listModel.ClientMasterList = (from user in _userMasterRepository.Table
+                                          join role in _roleMasterRepository.Table
+                                          on user.AdminRoleMasterId equals role.AdminRoleMasterId
+                                          into UserRoleGroup
+                                          from userrole in UserRoleGroup.DefaultIfEmpty()
+                                          where user.UserType == "Client"
+                                          select new ClientMasterModel
+                                          {
+                                              FirstName = user.FirstName,
+                                              LastName = user.LastName,
+                                              IsActive = user.IsActive,
+                                              UserName = user.UserName,
+                                              MobileNumber = user.MobileNumber,
+                                              DOB = user.DOB,
+                                              AdminRoleMasterId = user.AdminRoleMasterId,
+                                              UserMasterId = user.UserMasterId
+                                          }).ToList();
+
             return listModel;
         }
-
-
-        //Get UserMaster by UserMaster id.
         public UserModel GetUserClient(int userMasterId)
         {
             if (userMasterId <= 0)
@@ -79,21 +80,24 @@ namespace Coditech.DataAccessLayer
             UserModel userMasterModel = userMasterData.FromEntityToModel<UserModel>();
             return userMasterModel;
         }
-
-        //Update UserMaster.
         public UserModel UpdateUserClient(UserModel userModel)
         {
             if (IsNull(userModel))
                 throw new CoditechException(ErrorCodes.InvalidData, GeneralResources.ModelNotNull);
 
             if (userModel.UserMasterId < 1)
-                throw new CoditechException(ErrorCodes.IdLessThanOne, string.Format(GeneralResources.ErrorIdLessThanOne, "ProductMasterID"));
+                throw new CoditechException(ErrorCodes.IdLessThanOne, string.Format(GeneralResources.ErrorIdLessThanOne, "UserMasterId"));
 
             UserMaster userMasterData = _userMasterRepository.Table.Where(x => x.UserMasterId == userModel.UserMasterId)?.FirstOrDefault();
+            userMasterData.FirstName = userModel.FirstName;
+            userMasterData.MiddleName = userModel.MiddleName;
+            userMasterData.LastName = userModel.LastName;
+            userMasterData.DOB = userModel.DOB;
+            userMasterData.Nationality = userModel.Nationality;
+            userMasterData.MobileNumber = userModel.MobileNumber;
             userMasterData.IsActive = userModel.IsActive;
-            userMasterData.AdminRoleMasterId = userModel.AdminRoleMasterId;
-            userMasterData.ModifiedBy = userModel.ModifiedBy;
-            //Update UserMaster
+            userMasterData.EmailId = userModel.EmailId;
+            userMasterData.UserName = userModel.EmailId;
             bool isUserMasterUpdated = _userMasterRepository.Update(userMasterData);
             if (!isUserMasterUpdated)
             {
@@ -102,7 +106,6 @@ namespace Coditech.DataAccessLayer
             }
             return userModel;
         }
-
         #endregion
     }
 }

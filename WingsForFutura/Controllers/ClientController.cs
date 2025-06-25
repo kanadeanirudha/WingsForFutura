@@ -1,11 +1,8 @@
 ﻿using Coditech.BusinessLogicLayer;
 using Coditech.Filters;
 using Coditech.Resources;
-using Coditech.Utilities.Constant;
-using Coditech.Utilities.Helper;
 using Coditech.ViewModel;
 using System.Web.Mvc;
-using System.Web.Security;
 namespace Coditech.Controllers
 {
     [SessionTimeoutAttribute]
@@ -22,54 +19,55 @@ namespace Coditech.Controllers
 
         public ActionResult List()
         {
-            UserMasterListViewModel list = _userClientBA.GetUserClientList();
-            return View($"~/Views/UserClient/List.cshtml", list);
+            ClientMasterListViewModel list = _userClientBA.GetUserClientList();
+            return View($"~/Views/Client/List.cshtml", list);
         }
         [HttpGet]
         public virtual ActionResult Create()
         {
-            return View(createEdit, new UserMasterViewModel());
+            return View(createEdit, new ClientMasterViewModel());
         }
 
         [HttpPost]
-        public virtual ActionResult Create(UserMasterViewModel userMasterViewModel)
+        public virtual ActionResult Create(ClientMasterViewModel clientMasterViewModel)
         {
             if (ModelState.IsValid)
             {
-                userMasterViewModel = _userClientBA.CreateUserClient(userMasterViewModel);
-                if (!userMasterViewModel.HasError)
+                clientMasterViewModel = _userClientBA.CreateUserClient(clientMasterViewModel);
+                if (!clientMasterViewModel.HasError)
                 {
                     SetNotificationMessage(GetSuccessNotificationMessage(GeneralResources.RecordAddedSuccessMessage));
                     return RedirectToAction("List", CreateActionDataTable());
                 }
             }
-            SetNotificationMessage(GetErrorNotificationMessage(userMasterViewModel.ErrorMessage));
-            return View(createEdit, userMasterViewModel);
+
+            SetNotificationMessage(GetErrorNotificationMessage(clientMasterViewModel.ErrorMessage));
+            return View(createEdit, clientMasterViewModel);
         }
 
         [HttpGet]
         public virtual ActionResult EditUserClient(int userMasterId)
         {
-            UserMasterViewModel userMasterViewModel = _userClientBA.GetUserClient(userMasterId);
+            ClientMasterViewModel clientMasterViewModel = _userClientBA.GetUserClient(userMasterId);
             foreach (var item in _adminRoleMasterBA.GetAdminRoleList()?.AdminRoleMasterList)
             {
-                userMasterViewModel.AdminRoleMasterList.Add(new SelectListItem
+                clientMasterViewModel.ClientMasterList.Add(new SelectListItem
                 {
                     Text = item.RoleName,
                     Value = item.AdminRoleMasterId.ToString(),
-                    Selected = item.AdminRoleMasterId == userMasterViewModel.AdminRoleMasterId
+                    Selected = item.AdminRoleMasterId == clientMasterViewModel.AdminRoleMasterId
                 });
             }
 
-            return ActionView($"~/Views/UserMaster/Edit.cshtml", userMasterViewModel);
+            return ActionView($"~/Views/Client/Create.cshtml", clientMasterViewModel);
         }
 
         [HttpPost]
-        public virtual ActionResult EditUserClient(UserMasterViewModel userMasterViewModel)
+        public virtual ActionResult EditUserClient(ClientMasterViewModel clientMasterViewModel)
         {
             if (ModelState.IsValid)
             {
-                bool status = _userClientBA.UpdateUserClient(userMasterViewModel).HasError;
+                bool status = _userClientBA.UpdateUserClient(clientMasterViewModel).HasError;
                 SetNotificationMessage(status
                     ? GetErrorNotificationMessage(GeneralResources.UpdateErrorMessage)
                     : GetSuccessNotificationMessage(GeneralResources.UpdateMessage));
@@ -79,9 +77,8 @@ namespace Coditech.Controllers
                     return RedirectToAction<ClientController>(x => x.List());
                 }
             }
-            SetNotificationMessage(GetErrorNotificationMessage(userMasterViewModel.ErrorMessage));
-            return RedirectToAction<ClientController>(x => x.EditUserClient(userMasterViewModel.UserMasterId));
+            SetNotificationMessage(GetErrorNotificationMessage(clientMasterViewModel.ErrorMessage));
+            return RedirectToAction<ClientController>(x => x.EditUserClient(clientMasterViewModel.UserMasterId));
         }
-
     }
 }

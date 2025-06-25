@@ -2,7 +2,6 @@
 using Coditech.ExceptionManager;
 using Coditech.Model;
 using Coditech.Resources;
-using Coditech.Utilities.Constant;
 using Coditech.Utilities.Helper;
 using Coditech.ViewModel;
 using System;
@@ -17,53 +16,49 @@ namespace Coditech.BusinessLogicLayer
         {
             _userClientDAL = new UserClientDAL();
         }
-        public UserMasterViewModel CreateUserClient(UserMasterViewModel userMasterViewModel)
+        public ClientMasterViewModel CreateUserClient(ClientMasterViewModel clientMasterViewModel)
         {
             try
             {
-                UserModel userMasterModel = _userClientDAL.CreateUserClient(userMasterViewModel.ToModel<UserModel>());
-                return IsNotNull(userMasterModel) ? userMasterModel.ToViewModel<UserMasterViewModel>() : new UserMasterViewModel();
+                UserModel userModel = clientMasterViewModel.ToModel<UserModel>();
+                UserModel created = _userClientDAL.CreateUserClient(userModel);
+
+                return IsNotNull(created)
+                    ? created.ToViewModel<ClientMasterViewModel>()
+                    : new ClientMasterViewModel { HasError = true, ErrorMessage = GeneralResources.ErrorFailedToCreate };
             }
             catch (CoditechException ex)
             {
-                switch (ex.ErrorCode)
-                {
-                    case ErrorCodes.AlreadyExist:
-                        return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, ex.ErrorMessage);
-                    default:
-                        return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.ErrorFailedToCreate);
-                }
+                return (ClientMasterViewModel)GetViewModelWithErrorMessage(clientMasterViewModel, ex.ErrorMessage);
             }
             catch (Exception ex)
             {
                 CoditechFileLogging.LogMessage(ex.Message, CoditechComponents.Components.User.ToString());
-                return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.ErrorFailedToCreate);
+                return (ClientMasterViewModel)GetViewModelWithErrorMessage(clientMasterViewModel, GeneralResources.ErrorFailedToCreate);
             }
         }
-        public UserMasterListViewModel GetUserClientList()
+        public ClientMasterListViewModel GetUserClientList()
         {
-            UserMasterListModel userMasterList = _userClientDAL.GetUserClientList();
-            UserMasterListViewModel listViewModel = new UserMasterListViewModel { UserMasterList = userMasterList?.UserMasterList?.ToViewModel<UserMasterViewModel>().ToList() };
+            ClientMasterListModel clientMasterList = _userClientDAL.GetUserClientList();
+            ClientMasterListViewModel listViewModel = new ClientMasterListViewModel { ClientMasterList = clientMasterList?.ClientMasterList?.ToViewModel<ClientMasterViewModel>().ToList() };
             return listViewModel;
         }
 
-        //Get ProductMaster by ProductMaster id.
-        public UserMasterViewModel GetUserClient(int userMasterId)
-            => _userClientDAL.GetUserClient(userMasterId).ToViewModel<UserMasterViewModel>();
+        public ClientMasterViewModel GetUserClient(int userMasterId)
+            => _userClientDAL.GetUserClient(userMasterId).ToViewModel<ClientMasterViewModel>();
 
-        //Update ProductMaster.
-        public UserMasterViewModel UpdateUserClient(UserMasterViewModel userMasterViewModel)
+        public ClientMasterViewModel UpdateUserClient(ClientMasterViewModel clientMasterViewModel)
         {
             try
             {
-                userMasterViewModel.ModifiedBy = LoginUserId();
-                UserModel userMasterModel = _userClientDAL.UpdateUserClient(userMasterViewModel.ToModel<UserModel>());
-                return IsNotNull(userMasterModel) ? userMasterModel.ToViewModel<UserMasterViewModel>() : (UserMasterViewModel)GetViewModelWithErrorMessage(new UserMasterListViewModel(), GeneralResources.UpdateErrorMessage);
+                clientMasterViewModel.ModifiedBy = LoginUserId();
+                UserModel userMasterModel = _userClientDAL.UpdateUserClient(clientMasterViewModel.ToModel<UserModel>());
+                return IsNotNull(userMasterModel) ? userMasterModel.ToViewModel<ClientMasterViewModel>() : (ClientMasterViewModel)GetViewModelWithErrorMessage(new ClientMasterListViewModel(), GeneralResources.UpdateErrorMessage);
             }
             catch (Exception ex)
             {
                 CoditechFileLogging.LogMessage(ex.Message, CoditechComponents.Components.ClientMaster.ToString());
-                return (UserMasterViewModel)GetViewModelWithErrorMessage(userMasterViewModel, GeneralResources.UpdateErrorMessage);
+                return (ClientMasterViewModel)GetViewModelWithErrorMessage(clientMasterViewModel, GeneralResources.UpdateErrorMessage);
             }
         }
     }

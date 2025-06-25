@@ -46,6 +46,8 @@
     <Compile Include="DataModel\View_ReturnBoolean.cs" />
     <Compile Include="Model\AdminRoleMaster\AdminRoleMasterListModel.cs" />
     <Compile Include="Model\AdminRoleMaster\AdminRoleMasterModel.cs" />
+    <Compile Include="Model\ClientMaster\ClientMasterListModel.cs" />
+    <Compile Include="Model\ClientMaster\ClientMasterModel.cs" />
     <Compile Include="Model\ProductMaster\ProductMasterListModel.cs" />
     <Compile Include="Model\ProductMaster\ProductMasterModel.cs" />
     <Compile Include="Model\User\UserMasterListModel.cs" />

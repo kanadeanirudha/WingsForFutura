@@ -20,7 +20,6 @@ namespace Coditech.DataAccessLayer
             _roleMasterRepository = new CoditechRepository<AdminRoleMaster>();
             _adminAssociateFormsToRoleRepository = new CoditechRepository<AdminAssociateFormsToRole>();
         }
-
         #region Public Method
         public UserModel Login(UserModel userModel)
         {
@@ -57,7 +56,6 @@ namespace Coditech.DataAccessLayer
             }
             return userModel;
         }
-
         public UserModel CreateUser(UserModel userMasterModel)
         {
             if (IsNull(userMasterModel))
@@ -76,8 +74,6 @@ namespace Coditech.DataAccessLayer
             }
             return userMasterModel;
         }
-
-
         public UserMasterListModel GetUserList()
         {
             UserMasterListModel listModel = new UserMasterListModel();
@@ -86,7 +82,7 @@ namespace Coditech.DataAccessLayer
                                         on user.AdminRoleMasterId equals role.AdminRoleMasterId
                                         into UserRoleGroup //Performing LINQ Group Join
                                         from userrole in UserRoleGroup.DefaultIfEmpty()
-                                        where user.UserType != "SuperAdmin"
+                                        where user.UserType != "SuperAdmin" && user.UserType != "Client"
                                         select new UserModel
                                         {
                                             FirstName = user.FirstName,
@@ -98,8 +94,6 @@ namespace Coditech.DataAccessLayer
                                         }).ToList();
             return listModel;
         }
-
-
         //Get UserMaster by UserMaster id.
         public UserModel GetUserMaster(int userMasterId)
         {
@@ -111,7 +105,6 @@ namespace Coditech.DataAccessLayer
             UserModel userMasterModel = userMasterData.FromEntityToModel<UserModel>();
             return userMasterModel;
         }
-
         //Update UserMaster.
         public UserModel UpdateUserMaster(UserModel userModel)
         {
@@ -172,8 +165,6 @@ namespace Coditech.DataAccessLayer
                         RoleName = g.Key.RoleName
                     }).ToList();
         }
-
-
         #endregion
     }
 }
